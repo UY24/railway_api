@@ -3,15 +3,19 @@ const jwt = require("jsonwebtoken");
 const { JWT_KEY } = require("../config/serverConfig");
 const { User } = require("../models");
 
-const INVALID_USER_ERROR = "Please authenticate with a valid token";
-const NOT_ADMIN = "You are not an admin";
+const messages = require("../constants/messages");
 
 const isAdmin = async (req, res, next) => {
   const token = req.header("auth_token");
   if (!token) {
     return res
       .status(401)
-      .json({ success: false, data: {}, error: INVALID_USER_ERROR });
+      .json({
+        success: false,
+        data: {},
+        messages: messages.error.invalidUser,
+        err: {},
+      });
   }
   try {
     const data = jwt.verify(token, JWT_KEY);
@@ -24,14 +28,16 @@ const isAdmin = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         data: {},
-        err: "User not found",
+        messages:messages.error.userNotFound,
+        err: {},
       });
     }
     if (user.role === "customer") {
       return res.status(401).json({
         success: false,
         data: {},
-        err: NOT_ADMIN,
+        messages: messages.error.notAdmin,
+        err: {},
       });
     }
     next();
@@ -39,7 +45,8 @@ const isAdmin = async (req, res, next) => {
     return res.status(401).json({
       success: false,
       data: {},
-      err: INVALID_USER_ERROR,
+      messages: messages.error.invalidUser,
+      err: {},
     });
   }
 };

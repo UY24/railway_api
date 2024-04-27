@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const { SALT, API_KEY, JWT_KEY } = require("../config/serverConfig");
 const { User } = require("../models");
+const messages = require("../constants/messages");
 
 const register = async (req, res) => {
   try {
@@ -19,12 +20,14 @@ const register = async (req, res) => {
     return res.status(201).json({
       success: true,
       data: user,
+      messages:messages.success.userCreated,
       err: {},
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
       data: {},
+      messages: messages.error.internalServerError,
       err: error,
     });
   }
@@ -41,20 +44,22 @@ const login = async (req, res) => {
       return res.status(404).json({
         success: false,
         data: {},
-        err: "User not found",
+        messages:messages.error.userNotFound,
+        err: {},
       });
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(400).json({
         success: false,
+        messages:messages.error.invalidPassword,
         data: {},
-        err: "Wrong Password",
+        err: {},
       });
     }
     const payload = {
       email: user.email,
     };
-    const token = jwt.sign(payload, JWT_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, JWT_KEY, { expiresIn: "24h" });
     return res.status(200).json({
       success: true,
       data: token,
@@ -64,6 +69,7 @@ const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       data: {},
+      messages:messages.error.internalServerError,
       err: error,
     });
   }
