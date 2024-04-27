@@ -25,5 +25,27 @@ const create = async (req, res) => {
     });
   }
 };
+const get = async (req, res) => {
+  try {
+    const trainDetails = await Train.findAll({
+      where: {
+        source: req.body.source,
+        dest: req.body.dest,
+      },
+    });
+   
+    return res.status(200).json({
+      success: true,
+      data: trainDetails,
+      err: {},
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      data: {},
+      err: error,
+    });
+  }
+};
 
-module.exports = { create };
+module.exports = { create, get };
