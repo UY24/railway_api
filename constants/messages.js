@@ -14,6 +14,7 @@ const messages = {
   },
   error: {
     internalServerError: "Internal server error.",
+    fieldMissing:"Some fields are missing",
 
     userNotFound: "User not found",
     missingEmail: "Email is required.",
