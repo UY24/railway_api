@@ -16,18 +16,19 @@ const create = async (req, res) => {
     return res.status(201).json({
       success: true,
       data: train,
-      messages: messages.success.tCreated,
+      message: messages.success.trainCreated,
       err: {},
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
       data: {},
-      messages: messages.error.internalServerError,
-      err: error
+      message: messages.error.internalServerError,
+      err: error,
     });
   }
 };
+
 const get = async (req, res) => {
   try {
     const trainDetails = await Train.findAll({
@@ -36,22 +37,23 @@ const get = async (req, res) => {
         dest: req.body.dest,
       },
     });
-   
+
     return res.status(200).json({
       success: true,
-      messages: messages.success.tGet,
+      message: messages.success.trainGet,
       data: trainDetails,
       err: {},
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      messages: messages.error.internalServerError,
+      message: messages.error.internalServerError,
       data: {},
       err: error,
     });
   }
 };
+
 const update = async (req, res) => {
   try {
     const trainId = req.params.id;
@@ -78,7 +80,7 @@ const update = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: messages.success.tUpdated,
+      message: messages.success.trainUpdated,
       data: updatedTrain,
       err: {},
     });
@@ -86,10 +88,10 @@ const update = async (req, res) => {
     return res.status(500).json({
       success: false,
       data: {},
-      messages: messages.error.internalServerError,
+      message: messages.error.internalServerError,
       err: error,
     });
   }
 };
 
-module.exports = { create, get, update};
+module.exports = { create, get, update };

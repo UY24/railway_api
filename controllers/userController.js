@@ -20,14 +20,14 @@ const register = async (req, res) => {
     return res.status(201).json({
       success: true,
       data: user,
-      messages:messages.success.userCreated,
+      message:messages.success.userCreated,
       err: {},
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
       data: {},
-      messages: messages.error.internalServerError,
+      message: messages.error.internalServerError,
       err: error,
     });
   }
@@ -44,14 +44,14 @@ const login = async (req, res) => {
       return res.status(404).json({
         success: false,
         data: {},
-        messages:messages.error.userNotFound,
+        message:messages.error.userNotFound,
         err: {},
       });
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(400).json({
         success: false,
-        messages:messages.error.invalidPassword,
+        message:messages.error.invalidPassword,
         data: {},
         err: {},
       });
@@ -69,7 +69,7 @@ const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       data: {},
-      messages:messages.error.internalServerError,
+      message:messages.error.internalServerError,
       err: error,
     });
   }
